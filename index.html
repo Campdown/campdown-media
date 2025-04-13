@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Video Player</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars */
+        }
+
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1; /* Behind any other content */
+        }
+    </style>
+</head>
+<body>
+
+<video id="video" autoplay loop muted>
+    <source src="video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<script>
+    // Request fullscreen on video play
+    const video = document.getElementById('video');
+
+    video.addEventListener('loadeddata', () => {
+        if (video.readyState >= 3) { // Ensure video is ready
+            video.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        }
+    });
+
+    // Optional: Handle fullscreen change
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+            video.requestFullscreen(); // Request fullscreen again if exited
+        }
+    });
+</script>
+
+</body>
+</html>
